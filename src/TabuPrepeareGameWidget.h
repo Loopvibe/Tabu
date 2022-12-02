@@ -38,6 +38,11 @@ private slots:
      */
     void onMenuButtonClickedSlot();
 
+    /*!
+     * \brief Обрабатывает нажатие на кнопку "Выбрать папку".
+     */
+    void onChooseFileButtonClickedSlot();
+
 private:
     /*!
      * \brief Подготавливает интерфейс к показу.
@@ -53,6 +58,7 @@ private:
 private:
     //! Графический интерфейс.
     Ui::TabuPrepeareGameWidget *m_ui;
+
 };
 
 #endif // TABUPREPEAREGAMEWIDGET_H

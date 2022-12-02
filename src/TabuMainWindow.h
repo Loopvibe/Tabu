@@ -26,6 +26,27 @@ public:
      */
     ~TabuMainWindow();
 
+private slots:
+    /*!
+     * \brief Обрабатывает возвращения пользователя в меню.
+     */
+    void backToMenuSlot();
+
+    /*!
+     * \brief Обрабатывает нажатие на кнопку "Старт".
+     */
+    void onStartButtonClickedSlot();
+
+    /*!
+     * \brief Обрабатывает нажатие на кнопку "Выход".
+     */
+    void onExitButtonClickedSlot();
+
+    /*!
+     * \brief Обрабатывает нажатие на кнопку "Правила".
+     */
+    void onRulesButtonClickedSlot();
+
 private:
     /*!
      * \brief Подготавливает интерфейс к показу.
@@ -39,6 +60,7 @@ private:
 
 
 private:
+    //! Графический интерфейс.
     Ui::TabuMainWindow *m_ui;
 };
 #endif // TABUMAINWINDOW_H

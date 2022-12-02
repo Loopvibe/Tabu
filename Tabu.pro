@@ -1,19 +1,31 @@
-QT       += core gui
+QT       += core gui widgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+TARGET = Tabu
+TEMPLATE = app
 
-CONFIG += c++17
+VERSION = 0.1.0
+
+UI_DIR = .build
+MOC_DIR = .build
+OBJECTS_DIR = .build
+
+target.path = bin
 
 SOURCES += \
+    src/TabuPrepeareGameWidget.cpp \
+    src/TabuRulesDialog.cpp \
     src/main.cpp \
     src/TabuMainWindow.cpp
 
 HEADERS += \
-    src/TabuMainWindow.h
+    src/TabuMainWindow.h \
+    src/TabuPrepeareGameWidget.h \
+    src/TabuRulesDialog.h
 
 FORMS += \
-    src/TabuMainWindow.ui
+    src/TabuMainWindow.ui \
+    src/TabuPrepeareGameWidget.ui \
+    src/TabuRulesDialog.ui
 
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+
+INSTALLS += target

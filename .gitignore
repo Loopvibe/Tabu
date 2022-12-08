@@ -6,3 +6,5 @@ Makefile*
 *.pro.user
 .qtc*
 Tabu_resource.rc
+bin
+object_script.*

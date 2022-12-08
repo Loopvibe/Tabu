@@ -36,6 +36,11 @@ private slots:
     /*!
      * \brief Обрабатывает нажатие на кнопку "Меню".
      */
+    void onStartButtonClickedSlot();
+
+    /*!
+     * \brief Обрабатывает нажатие на кнопку "Меню".
+     */
     void onMenuButtonClickedSlot();
 
     /*!
@@ -44,6 +49,26 @@ private slots:
     void onChooseFileButtonClickedSlot();
 
 private:
+    /*!
+     * \brief Получает список команд.
+     * \return Список команд.
+     */
+    QList<QString> teams();
+
+    /*!
+     * \brief Получает слова для игры.
+     * \return Слова.
+     */
+    QMap<QString, QStringList> words();
+
+    /*!
+     * \brief Парсит данные в словарь.
+     * \param _data - Данные.
+     * \param _words[in, out] - Словарь.
+     */
+    void parsingData(const QString &_data,
+                     QMap<QString, QStringList> &_words);
+
     /*!
      * \brief Подготавливает интерфейс к показу.
      */
@@ -56,6 +81,8 @@ private:
 
 
 private:
+    //! Путь к файлам тем игры.
+    QString m_path;
     //! Графический интерфейс.
     Ui::TabuPrepeareGameWidget *m_ui;
 

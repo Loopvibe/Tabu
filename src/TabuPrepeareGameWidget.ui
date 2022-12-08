@@ -108,7 +108,7 @@
       </widget>
      </item>
      <item row="1" column="0" colspan="2">
-      <widget class="QListView" name="lvGamePacks"/>
+      <widget class="QListWidget" name="lvGamePacks"/>
      </item>
     </layout>
    </item>
@@ -140,7 +140,7 @@
        <number>0</number>
       </property>
       <item row="0" column="0">
-       <widget class="TabuAddComandWidget" name="commandWidget" native="true">
+       <widget class="TabuAddTeamWidget" name="teamWidget" native="true">
         <property name="layoutDirection">
          <enum>Qt::LeftToRight</enum>
         </property>
@@ -215,9 +215,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>TabuAddComandWidget</class>
+   <class>TabuAddTeamWidget</class>
    <extends>QWidget</extends>
-   <header location="global">src/TabuAddComandWidget.h</header>
+   <header>src/TabuAddTeamWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

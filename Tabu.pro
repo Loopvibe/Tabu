@@ -3,7 +3,7 @@ QT       += core gui widgets
 TARGET = Tabu
 TEMPLATE = app
 
-VERSION = 0.3.0
+VERSION = 0.4.0
 
 UI_DIR = .build
 MOC_DIR = .build
@@ -16,6 +16,7 @@ SOURCES += \
     src/TabuGameWidget.cpp \
     src/TabuPrepeareGameWidget.cpp \
     src/TabuRulesDialog.cpp \
+    src/TabuWord.cpp \
     src/main.cpp \
     src/TabuMainWindow.cpp
 
@@ -24,7 +25,8 @@ HEADERS += \
     src/TabuGameWidget.h \
     src/TabuMainWindow.h \
     src/TabuPrepeareGameWidget.h \
-    src/TabuRulesDialog.h
+    src/TabuRulesDialog.h \
+    src/TabuWord.h
 
 FORMS += \
     src/TabuAddTeamWidget.ui \

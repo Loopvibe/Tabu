@@ -2,8 +2,9 @@
 #define TABUGAMEWIDGET_H
 
 #include <QWidget>
-
 #include <QMap>
+
+class TabuWord;
 
 namespace Ui {
 class TabuGameWidget;
@@ -19,26 +20,58 @@ class TabuGameWidget : public QWidget
 public:
     /*!
      * \brief Конструктор.
-     * \param _teams - Команды.
-     * \param _gameTime - время раунда.
-     * \param _banWords - Словарь слов.
      * \param _parent - родительский виджет.
      */
-    explicit TabuGameWidget(const QList<QString> &_teams,
-                            int _gameTime,
-                            const QMap<QString, QStringList> &_words,
-                            QWidget *_parent = nullptr);
+    explicit TabuGameWidget(QWidget *parent = nullptr);
+
+    /*!
+     * \brief Устанавливает данные.
+     * \param _teams - Команды.
+     * \param _gameTime - время раунда.
+     * \param _words - Словарь слов.
+     * \param _winScore - Очки для победы.
+     */
+    void setData(const QStringList &_teams,
+                 int _gameTime,
+                 const QList<TabuWord *> &_words,
+                 int _winScore);
 
     /*!
      * \brief Дструктор.
      */
     ~TabuGameWidget();
 
+signals:
     /*!
-     * \brief Задает список команд. (Для начала игры)
-     * \param _teams - список команд.
+     * \brief Сигнал о выходе в меню.
      */
-    void setTeams(const QList<QString> &_teams);
+    void menuSignal();
+
+private slots:
+    /*!
+     * \brief Обрабатывает нажатие на кнопку "Выход".
+     */
+    void onExitButtonClickedSlot();
+
+    /*!
+     * \brief Обрабатывает нажатие на кнопку "Продолжить".
+     */
+    void onGoButtonClickedSlot();
+
+    /*!
+     * \brief Обрабатывает нажатие на кнопку "Отгадано".
+     */
+    void onDoneButtonClickedSlot();
+
+    /*!
+     * \brief Обрабатывает нажатие на кнопку "ТАБУ".
+     */
+    void onTabuButtonClickedSlot();
+
+    /*!
+     * \brief Обрабатывает нажатие на кнопку "Пропуск".
+     */
+    void onSkipButtonClickedSlot();
 
 private:
     /*!
@@ -51,13 +84,32 @@ private:
      */
     void prepeareConections();
 
+    /*!
+     * \brief Задает список команд. (Для начала игры)
+     * \param _teams - список команд.
+     */
+    void setTeams(const QStringList &_teams);
+
+    /*!
+     * \brief Задает словарь слов.
+     * \param _words - словарь слов.
+     */
+    void setWords(const QList<TabuWord *> &_words);
+
+    /*!
+     * \brief Очищает данные виджета.
+     */
+    void clearData();
+
 private:
     //! Словарь команд (ключ - название команды, значение - очки).
     QMap<QString, int> m_teams;
     //! Время раунда.
     int m_gameTime;
     //! Словарь слов(значение - игроване слово, ключ список запреток).
-    QMap<QString, QStringList> m_words;
+    QList<TabuWord*> m_words;
+    //! Очки для победы.
+    int m_winScore;
 
     //! Графический интерфейс.
     Ui::TabuGameWidget *m_ui;

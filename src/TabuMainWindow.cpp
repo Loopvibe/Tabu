@@ -2,6 +2,7 @@
 #include "ui_TabuMainWindow.h"
 
 #include "TabuRulesDialog.h"
+#include "TabuGameWidget.h"
 
 TabuMainWindow::TabuMainWindow(QWidget *_parent)
     : QMainWindow(_parent),
@@ -25,7 +26,7 @@ void TabuMainWindow::backToMenuSlot()
 
 void TabuMainWindow::onStartButtonClickedSlot()
 {
-    m_ui->prepeareGameWidget->setHidden(false);
+    m_ui->wPrepeareGame->setHidden(false);
     m_ui->fButtons->setHidden(true);
 }
 
@@ -44,10 +45,20 @@ void TabuMainWindow::onRulesButtonClickedSlot()
     rulesDialog = NULL;
 }
 
+void TabuMainWindow::startGameSlot()
+{
+    m_ui->wGame->setHidden(false);
+    m_ui->wGame->setData(m_ui->wPrepeareGame->teams(),
+                         m_ui->wPrepeareGame->roundTime(),
+                         m_ui->wPrepeareGame->words(),
+                         m_ui->wPrepeareGame->winScore());
+}
+
 void TabuMainWindow::prepeareUi()
 {
     setWindowTitle("Tabu");
-    m_ui->prepeareGameWidget->setHidden(true);
+    m_ui->wGame->setHidden(true);
+    m_ui->wPrepeareGame->setHidden(true);
 }
 
 void TabuMainWindow::prepeareConections()
@@ -61,9 +72,12 @@ void TabuMainWindow::prepeareConections()
     connect(m_ui->pbStart, SIGNAL(clicked()),
             this, SLOT(onStartButtonClickedSlot()));
 
-    connect(m_ui->prepeareGameWidget, SIGNAL(menuSignal()),
+    connect(m_ui->wPrepeareGame, SIGNAL(menuSignal()),
             this, SLOT(backToMenuSlot()));
 
-
+    connect(m_ui->wPrepeareGame, SIGNAL(startGameSignal()),
+            this, SLOT(startGameSlot()));
+    connect(m_ui->wGame, SIGNAL(menuSignal()),
+            this, SLOT(backToMenuSlot()));
 }
 

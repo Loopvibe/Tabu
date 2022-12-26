@@ -47,6 +47,11 @@ private slots:
      */
     void onRulesButtonClickedSlot();
 
+    /*!
+     * \brief Запускает виджет игры.
+     */
+    void startGameSlot();
+
 private:
     /*!
      * \brief Подготавливает интерфейс к показу.

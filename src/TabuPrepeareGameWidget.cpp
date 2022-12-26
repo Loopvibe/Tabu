@@ -2,6 +2,7 @@
 #include "ui_TabuPrepeareGameWidget.h"
 
 #include "TabuAddTeamWidget.h"
+#include "TabuWord.h"
 
 #include <QFileDialog>
 #include <QModelIndex>
@@ -23,9 +24,68 @@ TabuPrepeareGameWidget::~TabuPrepeareGameWidget()
     delete m_ui;
 }
 
-void TabuPrepeareGameWidget::onStartButtonClickedSlot()
+QStringList TabuPrepeareGameWidget::teams()
 {
-    words();
+    QStringList teams;
+
+    for (int i = 0; i < m_ui->fComands->children().count(); i++){
+        if(m_ui->fComands->children().at(i)->isWidgetType()){
+            QString team = static_cast<TabuAddTeamWidget*>
+                    (m_ui->fComands->children().at(i))->team();
+
+            if (!team.isEmpty()){
+                teams.append(team);
+            }
+        }
+    }
+
+    return teams;
+}
+
+QList<TabuWord *> TabuPrepeareGameWidget::words()
+{
+    QList<TabuWord *> words;
+
+    QFile file;
+    for(int i = 0; i < m_ui->lvGamePacks->selectedItems().count(); i++){
+        QString path(m_path + m_ui->lvGamePacks->selectedItems().at(i)->text());
+        file.setFileName(path);
+        if (!file.open(QIODevice::ReadOnly)){
+            continue;
+        }
+
+        QString data;
+        data = file.readAll();
+
+        //parsingData(data, words);
+
+        QStringList stringWords = data.split(QString("\r\n"));
+
+        for(int i = 0; i < stringWords.count(); i++){
+            QStringList stringWord = stringWords.at(i).split(QString(":"));
+
+            TabuWord * word = new TabuWord(stringWord.at(0));
+            word->setBanWords(stringWords.at(1).split(QString(",")));
+
+            words.append(word);
+        }
+    }
+
+    return words;
+}
+
+int TabuPrepeareGameWidget::roundTime()
+{
+    return m_ui->sbTimer->value();
+}
+
+int TabuPrepeareGameWidget::winScore()
+{
+    return m_ui->sbWinScore->value();
+}
+
+void TabuPrepeareGameWidget::onStartButtonClickedSlot()
+{    
     if(teams().count() <= 1){
         QMessageBox *message = new QMessageBox(this);
         message->setText(QString("Для игры требуется 2 и более команды"));
@@ -39,6 +99,9 @@ void TabuPrepeareGameWidget::onStartButtonClickedSlot()
         message->exec();
         return;
     }
+    emit startGameSignal();
+
+    setHidden(true);
 }
 
 void TabuPrepeareGameWidget::onMenuButtonClickedSlot()
@@ -69,45 +132,6 @@ void TabuPrepeareGameWidget::onChooseFileButtonClickedSlot()
     }
 }
 
-QList<QString> TabuPrepeareGameWidget::teams()
-{
-    QList<QString> teams;
-
-    for (int i = 0; i < m_ui->fComands->children().count(); i++){
-        if(m_ui->fComands->children().at(i)->isWidgetType()){
-            QString team = static_cast<TabuAddTeamWidget*>
-                    (m_ui->fComands->children().at(i))->team();
-
-            if (!team.isEmpty()){
-                teams.append(team);
-            }
-        }
-    }
-
-    return teams;
-}
-
-QMap<QString, QStringList> TabuPrepeareGameWidget::words()
-{
-    QMap<QString, QStringList> words;
-
-    QFile file;
-    for(int i = 0; i < m_ui->lvGamePacks->selectedItems().count(); i++){
-        QString path(m_path + m_ui->lvGamePacks->selectedItems().at(i)->text());
-        file.setFileName(path);
-        if (!file.open(QIODevice::ReadOnly)){
-            continue;
-        }
-
-        QString data;
-        data = file.readAll();
-
-        parsingData(data, words);
-    }
-
-    return words;
-}
-
 void TabuPrepeareGameWidget::parsingData(const QString &_data,
                                          QMap<QString, QStringList> &_words)
 {
@@ -124,16 +148,18 @@ void TabuPrepeareGameWidget::prepeareUi()
     m_ui->lvGamePacks->setSelectionMode(QAbstractItemView::MultiSelection);
     m_ui->sbTimer->setMinimum(30);
     m_ui->sbTimer->setMaximum(120);
+    m_ui->sbTimer->setValue(60);
+    m_ui->sbWinScore->setMinimum(15);
 }
 
 void TabuPrepeareGameWidget::prepeareConections()
 {
     connect(m_ui->pbStart, SIGNAL(clicked()),
-            this, SLOT(onStartButtonClickedSlot()));
+            SLOT(onStartButtonClickedSlot()));
 
     connect(m_ui->pbMenu, SIGNAL(clicked()),
-            this, SLOT(onMenuButtonClickedSlot()));
+            SLOT(onMenuButtonClickedSlot()));
 
     connect(m_ui->pbChooseFile, SIGNAL(clicked()),
-            this, SLOT(onChooseFileButtonClickedSlot()));
+            SLOT(onChooseFileButtonClickedSlot()));
 }

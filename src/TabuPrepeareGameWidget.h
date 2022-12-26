@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class TabuWord;
+
 namespace Ui {
 class TabuPrepeareGameWidget;
 }
@@ -26,15 +28,44 @@ public:
      */
     ~TabuPrepeareGameWidget();
 
+    /*!
+     * \brief Получает список команд.
+     * \return Список команд.
+     */
+    QStringList teams();
+
+    /*!
+     * \brief Получает слова для игры.
+     * \return Слова.
+     */
+    QList<TabuWord*> words();
+
+    /*!
+     * \brief Получает время раунда.
+     * \return Время раунда.
+     */
+    int roundTime();
+
+    /*!
+     * \brief Получает количество очков для победы.
+     * \return Кол-во очков для победы.
+     */
+    int winScore();
+
 signals:
     /*!
-     * \brief Отправляет сигнал при нажакти кнопки меню.
+     * \brief Сигнал при нажакти кнопки меню.
      */
     void menuSignal();
 
+    /*!
+     * \brief Сигнал для старта игры.
+     */
+    void startGameSignal();
+
 private slots:
     /*!
-     * \brief Обрабатывает нажатие на кнопку "Меню".
+     * \brief Обрабатывает нажатие на кнопку "Старт".
      */
     void onStartButtonClickedSlot();
 
@@ -49,17 +80,6 @@ private slots:
     void onChooseFileButtonClickedSlot();
 
 private:
-    /*!
-     * \brief Получает список команд.
-     * \return Список команд.
-     */
-    QList<QString> teams();
-
-    /*!
-     * \brief Получает слова для игры.
-     * \return Слова.
-     */
-    QMap<QString, QStringList> words();
 
     /*!
      * \brief Парсит данные в словарь.
